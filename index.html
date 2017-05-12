@@ -62,7 +62,7 @@
                     var LANG = arr_lang[arr_lang.length - 1].toUpperCase();
 
                     $.post(url + "vote.php", {
-                        vote: index,
+                        vote: index + 1,
                         country: LANG
                     }, function (json) {
                         loadMap(json);
