@@ -45,3 +45,15 @@
 .no-click{
     pointer-events: none;
 }
+
+.marker{
+    border: 1px solid grey;
+    width: 1px;
+    height: 1px;
+    transform: translate(-50%, -50%);
+    transition: width,height 300ms;
+}
+.marker.animation{
+    width: 20px;
+    height: 20px;
+}
