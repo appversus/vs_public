@@ -14,8 +14,10 @@
 }
 #vote > div{
     position: absolute;
+    top: 0;
     left: 0;
-    width: 100%;
+    width: 50%;
+    height: 100%;
     opacity: 0.8;
 
     background-repeat: no-repeat; 
@@ -32,14 +34,12 @@
 .vote1{
     background: url(../img/opt1.jpg);
     position: absolute;
-    top: 0;
-    height: 50%;
+    left: 0;
 }
 .vote2{
     background: url(../img/opt1.jpg);
     position: absolute;
-    top: 50%;
-    height: 50%;
+    left: 50%;
 }
 
 .no-click{
