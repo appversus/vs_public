@@ -181,7 +181,7 @@
                         if (!positions[i]) {
                             continue;
                         }
-                        console.log("adding marker: " + JSON.stringify(positions[i]));
+                        //console.log("adding marker: " + JSON.stringify(positions[i]));
                         var arr = positions[i].split(";");
 
                         var time = arr[0];
@@ -203,6 +203,7 @@
                         var num = window.num_marker;
                         (function (num) {
                             setTimeout(function () {
+                                console.log("voted!");
                                 var animated_num = num - 1;
                                 var time_animation = 2000;
                                 map.addMarker(animated_num, {
