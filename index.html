@@ -167,8 +167,7 @@
 
             window.num_marker = 0;
             function temp() {
-                $.post(url + "tempVotes.php", function (data) {
-                    window.lastData = data;
+                $.post(url + "tempVotes.php", function (data) {                    
                     setTimeout(function () {
                         temp();
                     }, 60000); //1min
@@ -176,6 +175,8 @@
                     if (!data || data == window.lastData) {
                         return;
                     }
+                    window.lastData = data;
+                    
                     var positions = data.split("|");
                     var init_time;
                     for (var i = 0; i < positions.length; i++) {
