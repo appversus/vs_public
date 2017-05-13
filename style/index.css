@@ -30,13 +30,13 @@
     opacity: 1;
 }
 .vote1{
-    background: url(img1.jpg);
+    background: url(../img/opt1.jpg);
     position: absolute;
     top: 0;
     height: 50%;
 }
 .vote2{
-    background: url(img2.jpg);
+    background: url(../img/opt1.jpg);
     position: absolute;
     top: 50%;
     height: 50%;

@@ -1,0 +1,98 @@
+
+#stats{
+    position: absolute;
+    bottom: 45px;
+    left: 0;
+    height: 60%;
+    text-align: left;
+    padding-left: 15px;
+}
+
+#stats .med{
+    position: absolute;
+    width: 100%;    
+    top: 0; 
+    bottom: 60px;
+    margin-top: -8px; /*perfect ubication*/
+    margin-bottom: -10px; /*perfect ubication*/
+    left: 0;
+    background-image: url(../img/100.png);
+    background-repeat: no-repeat;
+    background-size: 30% 100%;
+    opacity: 0.5;
+}
+
+#stats .stat{
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 100%;    
+    margin-left: 10px;
+    /*overflow: hidden;*/
+}
+
+#stats .img{
+    width: 100%;
+    padding-bottom: 100%;
+    position: absolute;
+    bottom: 0;
+    box-shadow: 0 0 5px black;
+    z-index: 1;
+
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+#stats .punct{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 30px;
+    margin-bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+#stats .punct > div{
+    position: absolute;
+    bottom: 0;
+}
+
+#stats .countries{
+    position: absolute;
+    width: 100%;
+    height: 45px;
+    bottom: -40px;
+    background: url(../img/country.png);
+    background-size: 100%;
+    text-align: center;
+    line-height: 55px;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+/*http://www.gotoquiz.com/web-coding/web-design/really-cool-progressresult-bars-in-pure-css/*/
+.barInner {
+    border-right: 1px solid #090909;
+    border-radius: 7px 7px 0 0;
+
+    width: 100%;
+    background-size: 100% 100%, 20px 20px, 100% 100%;
+    background-image:
+        linear-gradient(to left,
+        rgba(255, 255, 255, 0.33) 0,
+        rgba(255, 255, 255, 0.08) 50%,
+        rgba(0, 0, 0, 0.25) 50%,
+        rgba(0, 0, 0, 0.1) 100%),
+        linear-gradient(45deg,
+        rgba(255, 255, 255, 0.16) 25%,
+        rgba(0, 0, 0, 0) 25%,
+        rgba(0, 0, 0, 0) 50%,
+        rgba(255, 255, 255, 0.16) 50%,
+        rgba(255, 255, 255, 0.16) 75%,
+        rgba(0, 0, 0, 0) 75%,
+        rgba(0, 0, 0, 0));
+    box-shadow: inset 0 1px 1px 0px rgba(255, 215, 215, 0.5),
+        inset 0 -1px 1px 0px rgba(255, 255, 255, 0.25),
+        1px 1px 3px 0 rgba(0,0,0,0.33);
+}

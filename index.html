@@ -3,13 +3,15 @@
     <head>
         <title>Trump vs Putin</title>
         <link rel="stylesheet" type="text/css" href="libs/jquery-jvectormap-2.0.3.css"> 
-        <link rel="stylesheet" type="text/css" href="style.css"> 
+        <link rel="stylesheet" type="text/css" href="style/index.css"> 
+        <link rel="stylesheet" type="text/css" href="style/stats.css"> 
 
         <script type="text/javascript" src="libs/jquery-1.11.0.min.js"></script>
         <script type="text/javascript" src="libs/jquery-jvectormap-2.0.3.min.js"></script>        
         <script type="text/javascript" src="libs/jquery-jvectormap-world-mill.js"></script>
 
         <script type="text/javascript" src="utils.js"></script>
+        <script type="text/javascript" src="Stats.js"></script>
     </head>
     <body>
 
@@ -27,7 +29,7 @@
             var data = {};
 
             $(document).ready(function () {
-                
+
                 if (!window.Device) {
                     window.Device = false;
                 } else {
@@ -41,28 +43,41 @@
                 if (vote) {
                     $("#vote").remove();
                     $.post(url + "getAll.php", function (json) {
-                        loadMap(json);
+                        var arr;
+                        try {
+                            arr = JSON.parse(json);
+                        } catch (e) {
+                            console.log(e.message);
+                            console.log(json);
+                            return;
+                        }
+
+                        loadMap(arr);
                     });
                 }
             });
-            
+
             //VOTE
             $("#vote > div").click(function () {
                 $("#vote").addClass("no-click");
                 var index = $(this).index();
                 localStorage.setItem("vote", index);
+                var vote = index + 1;
+                
+                var voteUrl = url + "vote.php";
 
                 //get location from device
                 if (Device.vote) {
-                    Device.vote();
+                    var params = "vote=" + vote;
+                    Device.vote(voteUrl, params, "loadMap");
 
                 } else {
                     var lang = navigator.language;
                     var arr_lang = lang.split("-");
                     var LANG = arr_lang[arr_lang.length - 1].toUpperCase();
-
-                    $.post(url + "vote.php", {
-                        vote: index + 1,
+                    
+                    $.post(voteUrl, {
+                        vote: vote,
                         country: LANG
                     }, function (json) {
                         loadMap(json);
@@ -71,16 +86,7 @@
             });
 
             //LOAD MAP
-            function loadMap(json) {
-                var arr;
-                try {
-                    arr = JSON.parse(json);
-                } catch (e) {
-                    console.log(e.message);
-                    console.log(json);
-                    return;
-                }
-
+            function loadMap(arr) {
                 //init vars
                 var i, country;
 
@@ -136,6 +142,23 @@
 
                 //show map:
                 $("#vote").hide();
+                new Stats(arr);
+                temp();
+            }
+            
+            function temp(){
+                $.post(url + "tempVotes.php", function(data){
+                    if(!data){
+                        return;
+                    }
+                    var positions = data.split("|");
+                    for(var i = 0; i < positions.length; i++){
+                        var arr = positions[i].split(";");
+                        var time = arr[0];
+                        var position = arr[1];
+                                .
+                    }
+                });
             }
 
         </script>
