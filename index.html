@@ -125,7 +125,9 @@
                 console.log(myCustomColors)
 
                 var world = $('#world');
-                world.vectorMap({
+                window.map = new jvm.Map({
+                    container: world,
+//                world.vectorMap({                
                     map: 'world_mill',
                     onRegionTipShow: function (e, el, code) {
                         //el.html(el.html() + ' (GDP - ' + gdpData[code] + ')');
@@ -144,6 +146,15 @@
                                 values: myCustomColors
                             }]
                     },
+                    onMarkerLabelShow: function (event, label, code) {
+                        console.log(444)
+//                        label.html("<div class='marker'></div>");
+                        var marker = $("<div class='marker'>").appendTo(label);
+                        marker.addClass("animation");
+                        setTimeout(function () {
+                            marker.remove();
+                        }, 300);
+                    }
 //                    regionsSelectable: true,
 //                    regionsSelectableOne: true
                 });
@@ -154,17 +165,70 @@
                 temp();
             }
 
+            window.num_marker = 0;
             function temp() {
                 $.post(url + "tempVotes.php", function (data) {
+                    setTimeout(function () {
+                        temp();
+                    }, 60000); //1min
+
                     if (!data) {
                         return;
                     }
                     var positions = data.split("|");
+                    var init_time;
                     for (var i = 0; i < positions.length; i++) {
+                        if (!positions[i]) {
+                            continue;
+                        }
+                        console.log("adding marker: " + JSON.stringify(positions[i]));
                         var arr = positions[i].split(";");
+
                         var time = arr[0];
-                        var position = arr[1];
-                        console.log()
+                        var position = arr[1].split(":");
+                        var x = position[0];
+                        var y = position[1];
+                        var vote = arr[2];
+
+                        if (!init_time) {
+                            init_time = time;
+                        }
+
+                        var color = "red";
+                        if (vote > 1) {
+                            color = "blue";
+                        }
+
+                        window.num_marker = window.num_marker + 2;
+                        var num = window.num_marker;
+                        (function (num) {
+                            setTimeout(function () {
+                                var animated_num = num - 1;
+                                var time_animation = 2000;
+                                map.addMarker(animated_num, {
+                                    latLng: [x, y],
+                                    style: {
+                                        style: 'transition: r ' + time_animation + 'ms, opacity ' + time_animation * 1.5 + 'ms',
+                                        fill: 'transparent',
+                                        r: 5,
+                                        stroke: color
+                                    }
+                                });
+
+                                setTimeout(function () {
+                                    map.markers[animated_num].element.setStyle('r', '200');
+                                    map.markers[animated_num].element.setStyle('opacity', '0');
+                                    setTimeout(function () {
+                                        map.removeMarkers([animated_num]);
+                                    }, 1500 * 1.5);
+
+                                    //fixed
+                                    var data = {latLng: [x, y], style: {fill: color, r: 4}};
+                                    map.addMarker(num, data);
+
+                                }, 100);
+                            }, time - init_time);
+                        })(num);
                     }
                 });
             }
