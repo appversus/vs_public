@@ -168,11 +168,12 @@
             window.num_marker = 0;
             function temp() {
                 $.post(url + "tempVotes.php", function (data) {
+                    window.lastData = data;
                     setTimeout(function () {
                         temp();
                     }, 60000); //1min
 
-                    if (!data) {
+                    if (!data || data == window.lastData) {
                         return;
                     }
                     var positions = data.split("|");
@@ -201,7 +202,8 @@
 
                         window.num_marker = window.num_marker + 2;
                         var num = window.num_marker;
-                        (function (num) {                            
+                        (function (num) {
+                            console.log("time: " + time + "-" + init_time + " = " + (time - init_time));
                             setTimeout(function () {
                                 console.log("voted!");
                                 var animated_num = num - 1;
