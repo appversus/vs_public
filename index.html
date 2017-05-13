@@ -63,7 +63,7 @@
                 var index = $(this).index();
                 localStorage.setItem("vote", index);
                 var vote = index + 1;
-                
+
                 var voteUrl = url + "vote.php";
 
                 //get location from device
@@ -75,7 +75,7 @@
                     var lang = navigator.language;
                     var arr_lang = lang.split("-");
                     var LANG = arr_lang[arr_lang.length - 1].toUpperCase();
-                    
+
                     $.post(voteUrl, {
                         vote: vote,
                         country: LANG
@@ -130,6 +130,8 @@
                     onRegionTipShow: function (e, el, code) {
                         //el.html(el.html() + ' (GDP - ' + gdpData[code] + ')');
 //                        console.log(code);
+                        el.html(el.html() + "");
+
                     },
                     series: {
                         regions: [{
@@ -145,18 +147,18 @@
                 new Stats(arr);
                 temp();
             }
-            
-            function temp(){
-                $.post(url + "tempVotes.php", function(data){
-                    if(!data){
+
+            function temp() {
+                $.post(url + "tempVotes.php", function (data) {
+                    if (!data) {
                         return;
                     }
                     var positions = data.split("|");
-                    for(var i = 0; i < positions.length; i++){
+                    for (var i = 0; i < positions.length; i++) {
                         var arr = positions[i].split(";");
                         var time = arr[0];
                         var position = arr[1];
-                                .
+                        console.log()
                     }
                 });
             }
