@@ -43,16 +43,7 @@
                 if (vote) {
                     $("#vote").remove();
                     $.post(url + "getAll.php", function (json) {
-                        var arr;
-                        try {
-                            arr = JSON.parse(json);
-                        } catch (e) {
-                            console.log(e.message);
-                            console.log(json);
-                            return;
-                        }
-
-                        loadMap(arr);
+                        loadMap(json);
                     });
                 }
             });
@@ -86,7 +77,16 @@
             });
 
             //LOAD MAP
-            function loadMap(arr) {
+            function loadMap(json) {
+                var arr;
+                try {
+                    arr = JSON.parse(json);
+                } catch (e) {
+                    console.log(e.message);
+                    console.log(json);
+                    return;
+                }
+
                 //init vars
                 var i, country;
 
@@ -130,7 +130,13 @@
                     onRegionTipShow: function (e, el, code) {
                         //el.html(el.html() + ' (GDP - ' + gdpData[code] + ')');
 //                        console.log(code);
-                        el.html(el.html() + "");
+                        var country = getArrKey(arr, "cn", code);
+
+                        var style = "font-weight: bold; text-shadow: 1px 1px rgba(255,255,255,0); ";
+                        el.html(el.html() + " "
+                                + "<span style='" + style + " color:rgb(255,120,120)'>" + country.v1 + "</span>"
+                                + ":"
+                                + "<span style='" + style + " color:rgb(120,120,255)'>" + country.v2 + "</span>");
 
                     },
                     series: {
