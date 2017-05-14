@@ -28,8 +28,7 @@
     background-size: cover;
 }
 #vote #votes > div:hover{
-    /*background-size: 105%;*/
-    opacity: 1;
+    /*opacity: 1;*/
 }
 .preSelect{
     opacity: 1;
