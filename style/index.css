@@ -1,4 +1,8 @@
 
+html{
+    -webkit-tap-highlight-color:transparent;
+}
+
 .full{
     position: absolute;
     top: 0;
@@ -31,7 +35,7 @@
     /*opacity: 1;*/
 }
 .preSelect{
-    opacity: 1;
+    opacity: 1 !important;
 }
 
 #vote1{
@@ -53,10 +57,10 @@
     transform: translate(-50%, -50%);
     opacity: 0.8;
     pointer-events: none;
-    
-/*    background: url(../img/vs.png);
-    background-size: 100%;
-    background-repeat: no-repeat;*/
+
+    /*    background: url(../img/vs.png);
+        background-size: 100%;
+        background-repeat: no-repeat;*/
 }
 
 .no-click{
