@@ -2,6 +2,10 @@
 <html>
     <head>
         <title>Trump vs Putin</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=no">
+
+        <link rel="stylesheet" type="text/css" href="libs/font-awesome/css/font-awesome.min.css">
         <link rel="stylesheet" type="text/css" href="libs/jquery-jvectormap-2.0.3.css"> 
         <link rel="stylesheet" type="text/css" href="style/index.css"> 
         <link rel="stylesheet" type="text/css" href="style/stats.css"> 
@@ -9,15 +13,23 @@
         <script type="text/javascript" src="libs/jquery-1.11.0.min.js"></script>
         <script type="text/javascript" src="libs/jquery-jvectormap-2.0.3.min.js"></script>        
         <script type="text/javascript" src="libs/jquery-jvectormap-world-mill.js"></script>
+        <script type="text/javascript" src="libs/papaparse.min.js"></script>
+        <script type="text/javascript" src="libs/requirejs/require.js"></script>
+
+        <script type="text/javascript" src="modules/translate/Translate.js"></script>
 
         <script type="text/javascript" src="utils.js"></script>
         <script type="text/javascript" src="Stats.js"></script>
+
     </head>
     <body>
 
         <div id="vote" class="full">
-            <div class="vote1"></div>
-            <div class="vote2"></div>
+            <div id="votes">
+                <div id="vote1"></div>
+                <div id="vote2"></div>  
+            </div>
+            <img id="vs" src="img/arrows.png"/>
         </div>
 
         <div id="world" class="full"></div>
@@ -28,8 +40,28 @@
             var url = "http://trump-vs-putin.tk/";
             var data = {};
 
-            $(document).ready(function () {
+            var path = "";
+            require.config({
+                waitSeconds: 0, //prevent timeout by requirejs
+                paths: {
+                    // Major libraries
+//                    jquery: 'libs/jquery-1.11.0.min',
+                    // Require.js plugins
+                    text: 'libs/requirejs/text',
+                    propertyParser: 'libs/requirejs/propertyParser', //font plugin needed!
+                    font: 'libs/requirejs/font',
+                    css: 'libs/requirejs/css.min'
+                }
+            });
 
+            $(document).ready(function () {
+                window.translate = new Translate();
+                
+                //devices
+                var ua = navigator.userAgent.toLowerCase();
+                window.isAndroid = ua.indexOf("android") > -1; //&& ua.indexOf("mobile");
+                window.iPhone = ua.indexOf("iPhone") > -1 || ua.indexOf("iPod") > -1;
+                
                 if (!window.Device) {
                     window.Device = false;
                 } else {
@@ -49,7 +81,13 @@
             });
 
             //VOTE
-            $("#vote > div").click(function () {
+            $("#vote #votes > div").click(function () {
+                if (!$(this).hasClass("preSelect")) {
+                    $(".preSelect").removeClass("preSelect");
+                    $(this).addClass("preSelect");
+                    return;
+                }
+
                 $("#vote").addClass("no-click");
                 var index = $(this).index();
                 localStorage.setItem("vote", index);
@@ -167,7 +205,7 @@
 
             window.num_marker = 0;
             function temp() {
-                $.post(url + "tempVotes.php", function (data) {                    
+                $.post(url + "tempVotes.php", function (data) {
                     setTimeout(function () {
                         temp();
                     }, 60000); //1min
@@ -176,7 +214,7 @@
                         return;
                     }
                     window.lastData = data;
-                    
+
                     var positions = data.split("|");
                     var init_time;
                     for (var i = 0; i < positions.length; i++) {
@@ -236,6 +274,21 @@
                     }
                 });
             }
+
+            //
+            setTimeout(function () {
+                $("<div>").appendTo("body").load("modules/modalBox/modalBox.html", function () {
+                    window.modalBox = new ModalBox();
+                });
+            }, 1);
+
+            setTimeout(function () {
+                $("<div>").appendTo("body").load("modules/rate/rate.html", function () {
+                    new Rate("modules/", {
+                        android: "http://play.google.com/store/apps/details?id=gardiazabal.trumpvsputin"
+                    });
+                });
+            }, 70000);
 
         </script>
     </body>

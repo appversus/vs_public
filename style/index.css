@@ -12,7 +12,7 @@
     z-index: 1;
     cursor: pointer;
 }
-#vote > div{
+#vote #votes > div{
     position: absolute;
     top: 0;
     /*left: 0;*/
@@ -27,19 +27,36 @@
     -o-background-size: cover;
     background-size: cover;
 }
-#vote > div:hover{
+#vote #votes > div:hover{
     /*background-size: 105%;*/
     opacity: 1;
 }
-.vote1{
+.preSelect{
+    opacity: 1;
+}
+
+#vote1{
     background: url(../img/opt1.jpg);
     position: absolute;
     left: 0;
 }
-.vote2{
+#vote2{
     background: url(../img/opt2.jpg);
     position: absolute;
     left: 50%;
+}
+#vs{
+    position: absolute;
+    width: 250px;
+    /*height: 200px;*/
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0.8;
+    
+/*    background: url(../img/vs.png);
+    background-size: 100%;
+    background-repeat: no-repeat;*/
 }
 
 .no-click{
