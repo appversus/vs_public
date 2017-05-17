@@ -39,7 +39,7 @@
 
         <script>
             var url = "http://trump-vs-putin.tk/";
-            if(location.hostname === "localhost" || location.hostname === "127.0.0.1"){
+            if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
                 console.log("LOCALHOST");
                 url = "";
             }
@@ -61,12 +61,12 @@
 
             $(document).ready(function () {
                 window.translate = new Translate();
-                
+
                 //devices
                 var ua = navigator.userAgent.toLowerCase();
                 window.isAndroid = ua.indexOf("android") > -1; //&& ua.indexOf("mobile");
                 window.iPhone = ua.indexOf("iPhone") > -1 || ua.indexOf("iPod") > -1;
-                
+
                 if (!window.Device) {
                     window.Device = false;
                 } else {
@@ -228,56 +228,59 @@
                         }
                         //console.log("adding marker: " + JSON.stringify(positions[i]));
                         var arr = positions[i].split(";");
-
                         var time = arr[0];
-                        var position = arr[1].split(":");
-                        var x = position[0];
-                        var y = position[1];
-                        var vote = arr[2];
 
                         if (!init_time) {
                             init_time = time;
                         }
 
-                        var color = "red";
-                        if (vote > 1) {
-                            color = "blue";
-                        }
-
                         window.num_marker = window.num_marker + 2;
                         var num = window.num_marker;
-                        (function (num) {
-                            console.log("time: " + time + "-" + init_time + " = " + (time - init_time));
-                            setTimeout(function () {
-                                console.log("voted!");
-                                var animated_num = num - 1;
-                                var time_animation = 2000;
-                                map.addMarker(animated_num, {
-                                    latLng: [x, y],
-                                    style: {
-                                        style: 'transition: r ' + time_animation + 'ms, opacity ' + time_animation * 1.5 + 'ms',
-                                        fill: 'transparent',
-                                        r: 5,
-                                        stroke: color
-                                    }
-                                });
 
-                                setTimeout(function () {
-                                    map.markers[animated_num].element.setStyle('r', '200');
-                                    map.markers[animated_num].element.setStyle('opacity', '0');
-                                    setTimeout(function () {
-                                        map.removeMarkers([animated_num]);
-                                    }, 1500 * 1.5);
-
-                                    //fixed
-                                    var data = {latLng: [x, y], style: {fill: color, r: 4}};
-                                    map.addMarker(num, data);
-
-                                }, 100);
-                            }, time - init_time);
-                        })(num);
+                        console.log("time: " + time + "-" + init_time + " = " + (time - init_time));
+                        showMarker(arr, num, time - init_time);
                     }
                 });
+            }
+
+            function showMarker(arr, num, time) {
+                var position = arr[1].split(":");
+                var x = position[0];
+                var y = position[1];
+                var vote = arr[2];
+
+                var color = "red";
+                if (vote > 1) {
+                    color = "blue";
+                }
+
+                setTimeout(function () {
+                    console.log("voted!");
+                    var animated_num = num - 1;
+                    var time_animation = 2000;
+                    map.addMarker(animated_num, {
+                        latLng: [x, y],
+                        style: {
+                            style: 'transition: r ' + time_animation + 'ms, opacity ' + time_animation * 1.5 + 'ms',
+                            fill: 'transparent',
+                            r: 5,
+                            stroke: color
+                        }
+                    });
+
+                    setTimeout(function () {
+                        map.markers[animated_num].element.setStyle('r', '200');
+                        map.markers[animated_num].element.setStyle('opacity', '0');
+                        setTimeout(function () {
+                            map.removeMarkers([animated_num]);
+                        }, 1500 * 1.5);
+
+                        //fixed
+                        var data = {latLng: [x, y], style: {fill: color, r: 4}};
+                        map.addMarker(num, data);
+
+                    }, 100);
+                }, time);
             }
 
             //
