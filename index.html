@@ -14,6 +14,7 @@
         <script type="text/javascript" src="libs/jquery-jvectormap-2.0.3.min.js"></script>        
         <script type="text/javascript" src="libs/jquery-jvectormap-world-mill.js"></script>
         <script type="text/javascript" src="libs/papaparse.min.js"></script>
+        <script type="text/javascript" src="libs/analyticstracking.js"></script>
         <script type="text/javascript" src="libs/requirejs/require.js"></script>
 
         <script type="text/javascript" src="modules/translate/Translate.js"></script>
@@ -38,6 +39,10 @@
 
         <script>
             var url = "http://trump-vs-putin.tk/";
+            if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
+                console.log("LOCALHOST");
+                url = "";
+            }
             var data = {};
 
             var path = "";
@@ -74,7 +79,7 @@
                 var vote = localStorage.getItem("vote");
                 if (vote) {
                     $("#vote").remove();
-                    $.post(url + "getAll.php", function (json) {
+                    $.post(url + "getAll.php?nocache=" + Math.random(), function (json) {
                         loadMap(json);
                     });
                 }
@@ -222,12 +227,7 @@
                         }
                         //console.log("adding marker: " + JSON.stringify(positions[i]));
                         var arr = positions[i].split(";");
-
                         var time = arr[0];
-                        var position = arr[1].split(":");
-                        var x = position[0];
-                        var y = position[1];
-                        var vote = arr[2];
 
                         if (!init_time) {
                             init_time = time;
@@ -239,45 +239,53 @@
                             time = max_time = max_time + 6;
                         }
 
-                        var color = "red";
-                        if (vote > 1) {
-                            color = "blue";
-                        }
-
                         window.num_marker = window.num_marker + 2;
                         var num = window.num_marker;
-                        (function (num) {
-                            console.log("time: " + time + "-" + init_time + " = " + (time - init_time));
-                            setTimeout(function () {
-                                console.log("voted!");
-                                var animated_num = num - 1;
-                                var time_animation = 2000;
-                                map.addMarker(animated_num, {
-                                    latLng: [x, y],
-                                    style: {
-                                        style: 'transition: r ' + time_animation + 'ms, opacity ' + time_animation * 1.5 + 'ms',
-                                        fill: 'transparent',
-                                        r: 5,
-                                        stroke: color
-                                    }
-                                });
 
-                                setTimeout(function () {
-                                    map.markers[animated_num].element.setStyle('r', '200');
-                                    map.markers[animated_num].element.setStyle('opacity', '0');
-                                    setTimeout(function () {
-                                        map.removeMarkers([animated_num]);
-                                    }, 1500 * 1.5);
-
-                                    //fixed
-                                    var data = {latLng: [x, y], style: {fill: color, r: 4}};
-                                    map.addMarker(num, data);
-
-                                }, 100);
-                            }, time - init_time);
-                        })(num);
+                        console.log("time: " + time + "-" + init_time + " = " + (time - init_time));
+                        showMarker(arr, num, time - init_time);
                     }
                 });
+            }
+
+            function showMarker(arr, num, time) {
+                var position = arr[1].split(":");
+                var x = position[0];
+                var y = position[1];
+                var vote = arr[2];
+
+                var color = "red";
+                if (vote > 1) {
+                    color = "blue";
+                }
+
+                setTimeout(function () {
+                    console.log("voted!");
+                    var animated_num = num - 1;
+                    var time_animation = 2000;
+                    map.addMarker(animated_num, {
+                        latLng: [x, y],
+                        style: {
+                            style: 'transition: r ' + time_animation + 'ms, opacity ' + time_animation * 1.5 + 'ms',
+                            fill: 'transparent',
+                            r: 5,
+                            stroke: color
+                        }
+                    });
+
+                    setTimeout(function () {
+                        map.markers[animated_num].element.setStyle('r', '200');
+                        map.markers[animated_num].element.setStyle('opacity', '0');
+                        setTimeout(function () {
+                            map.removeMarkers([animated_num]);
+                        }, 1500 * 1.5);
+
+                        //fixed
+                        var data = {latLng: [x, y], style: {fill: color, r: 4}};
+                        map.addMarker(num, data);
+
+                    }, 100);
+                }, time);
             }
 
             //
