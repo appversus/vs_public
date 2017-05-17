@@ -56,12 +56,12 @@
 
             $(document).ready(function () {
                 window.translate = new Translate();
-                
+
                 //devices
                 var ua = navigator.userAgent.toLowerCase();
                 window.isAndroid = ua.indexOf("android") > -1; //&& ua.indexOf("mobile");
                 window.iPhone = ua.indexOf("iPhone") > -1 || ua.indexOf("iPod") > -1;
-                
+
                 if (!window.Device) {
                     window.Device = false;
                 } else {
@@ -87,8 +87,8 @@
                     $(this).addClass("preSelect");
                     return;
                 }
+                $("#vote").hide();
 
-                $("#vote").addClass("no-click");
                 var index = $(this).index();
                 localStorage.setItem("vote", index);
                 var vote = index + 1;
@@ -160,7 +160,7 @@
                     hex = rgbToHex(r, g, b);
                     myCustomColors[country] = hex;
                 }
-                console.log(myCustomColors)
+                //console.log(myCustomColors)
 
                 var world = $('#world');
                 window.map = new jvm.Map({
@@ -197,8 +197,7 @@
 //                    regionsSelectableOne: true
                 });
 
-                //show map:
-                $("#vote").hide();
+                //show map:                
                 new Stats(arr);
                 temp();
             }
@@ -216,7 +215,7 @@
                     window.lastData = data;
 
                     var positions = data.split("|");
-                    var init_time;
+                    var init_time, max_time;
                     for (var i = 0; i < positions.length; i++) {
                         if (!positions[i]) {
                             continue;
@@ -232,6 +231,12 @@
 
                         if (!init_time) {
                             init_time = time;
+                            max_time = time;
+                        }
+
+                        //HACER TRAMPAS:
+                        if (time > max_time + 60) {
+                            time = max_time = max_time + 6;
                         }
 
                         var color = "red";
