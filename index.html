@@ -225,8 +225,8 @@
 
             function loadTempVotes(data) {
                 var positions = data.split("|");
-                var init_time, max_time;
-                for (var i = 0; i < positions.length; i++) {
+                var init_time, min_time;
+                for (var i = positions.length - 1; i >= 0; i--) {
                     if (!positions[i]) {
                         continue;
                     }
@@ -236,26 +236,29 @@
 
                     if (!init_time) {
                         init_time = time;
-                        max_time = time;
+                        min_time = time;
                     }
 
                     //HACER TRAMPAS:
-                    if (time > max_time + 60) {
-                        time = max_time = max_time + 6;
+                    if (time < min_time - 60) {
+                        time = min_time = +min_time - 6;
                     }
 
                     window.num_marker = window.num_marker + 2;
                     var num = window.num_marker;
 
-                    console.log("time: " + time + "-" + init_time + " = " + (time - init_time));
-                    showMarker(arr, num, time - init_time);
+                    showMarker(arr, num, init_time - time);
                 }
             }
 
             function showMarker(arr, num, time) {
+                console.log("showMarker " + num + "-" + time + ": " + JSON.stringify(arr));
                 var position = arr[1].split(":");
-                var x = position[0];
-                var y = position[1];
+                if (position.length < 2) {
+                    return;
+                }
+                var x = parseFloat(position[0].replace(',', '.'));
+                var y = parseFloat(position[1].replace(',', '.'));
                 var vote = arr[2];
 
                 var color = "red";
@@ -267,6 +270,7 @@
                     console.log("voted!");
                     var animated_num = num - 1;
                     var time_animation = 2000;
+                    //console.log("num: " + animated_num + " " + x + "," + y + " " + time_animation + " " + time)
                     map.addMarker(animated_num, {
                         latLng: [x, y],
                         style: {
@@ -278,6 +282,10 @@
                     });
 
                     setTimeout(function () {
+                        if (!map.markers[animated_num]) {
+                            console.log("!map.markers[animated_num]:" + (animated_num - 1) + " " + animated_num);
+                            return;
+                        }
                         map.markers[animated_num].element.setStyle('r', '200');
                         map.markers[animated_num].element.setStyle('opacity', '0');
                         setTimeout(function () {
@@ -289,7 +297,7 @@
                         map.addMarker(num, data);
 
                     }, 100);
-                }, time);
+                }, time * 1000);
             }
 
             //
