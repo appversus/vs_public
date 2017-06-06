@@ -219,33 +219,37 @@
                     }
                     window.lastData = data;
 
-                    var positions = data.split("|");
-                    var init_time, max_time;
-                    for (var i = 0; i < positions.length; i++) {
-                        if (!positions[i]) {
-                            continue;
-                        }
-                        //console.log("adding marker: " + JSON.stringify(positions[i]));
-                        var arr = positions[i].split(";");
-                        var time = arr[0];
-
-                        if (!init_time) {
-                            init_time = time;
-                            max_time = time; //trampas
-                        }
-
-                        //HACER TRAMPAS:
-                        if (time > max_time + 60) {
-                            time = max_time = max_time + 6;
-                        }
-
-                        window.num_marker = window.num_marker + 2;
-                        var num = window.num_marker;
-
-                        console.log("time: " + time + "-" + init_time + " = " + (time - init_time));
-                        showMarker(arr, num, time - init_time);
-                    }
+                    loadTempVotes(data);
                 });
+            }
+
+            function loadTempVotes(data) {
+                var positions = data.split("|");
+                var init_time, max_time;
+                for (var i = 0; i < positions.length; i++) {
+                    if (!positions[i]) {
+                        continue;
+                    }
+                    //console.log("adding marker: " + JSON.stringify(positions[i]));
+                    var arr = positions[i].split(";");
+                    var time = arr[0];
+
+                    if (!init_time) {
+                        init_time = time;
+                        max_time = time;
+                    }
+
+                    //HACER TRAMPAS:
+                    if (time > max_time + 60) {
+                        time = max_time = max_time + 6;
+                    }
+
+                    window.num_marker = window.num_marker + 2;
+                    var num = window.num_marker;
+
+                    console.log("time: " + time + "-" + init_time + " = " + (time - init_time));
+                    showMarker(arr, num, time - init_time);
+                }
             }
 
             function showMarker(arr, num, time) {
