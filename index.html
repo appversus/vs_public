@@ -241,8 +241,9 @@
 
                     //HACER TRAMPAS:
 //                    if (time < min_time - 60) {
-                    time = min_time = +min_time - 1.6;
-//                    }
+                    if (i > 0) {
+                        time = min_time = +min_time - 1.7;
+                    }
 
                     window.num_marker = window.num_marker + 2;
                     var num = window.num_marker;
