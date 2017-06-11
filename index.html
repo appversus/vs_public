@@ -237,13 +237,15 @@
                     if (!init_time) {
                         init_time = time;
                         min_time = time;
+                        //
+                    } else {
+                        //HACER TRAMPAS:
+                        //if (time < min_time - 60) {
+                        time = min_time = +min_time - 1.7;
+                        //}
                     }
 
-                    //HACER TRAMPAS:
-//                    if (time < min_time - 60) {
-                    if (i !== positions.length - 1) {
-                        time = min_time = +min_time - 1.7;
-                    }
+
 
                     window.num_marker = window.num_marker + 2;
                     var num = window.num_marker;
@@ -291,7 +293,7 @@
                         map.markers[animated_num].element.setStyle('opacity', '0');
                         setTimeout(function () {
                             map.removeMarkers([animated_num]);
-                        }, 1500 * 1.5);
+                        }, 1000 * 2);
 
                         //fixed
                         var data = {latLng: [x, y], style: {fill: color, r: 4}};
