@@ -23,21 +23,64 @@
         <script type="text/javascript" src="Stats.js"></script>
 
     </head>
-    <body>
+    <body style="margin:0">
 
         <div id="vote" class="full">
             <div id="votes">
                 <div id="vote1"></div>
-                <div id="vote2"></div>  
+                <div id="vote2"></div>
             </div>
             <img id="vs" src="img/arrows.png"/>
         </div>
 
-        <div id="world" class="full"></div>
+        <div id="world_container" style="position:relative; width:100%;">
+            <div id="world" class="full" style="position:absolute; width:100%; height:100%; overflow:hidden"></div>
+        </div>
 
+        <!--TWITTER-->
+        <div id="iframe_container">
+            <a class="twitter-timeline"  href="https://twitter.com/hashtag/trumporputin" data-widget-id="875556596105007104">#trumporputin Tweets</a>
+            <script>!function (d, s, id) {
+                    var js, fjs = d.getElementsByTagName(s)[0], p = /^http:/.test(d.location) ? 'http' : 'https';
+                    if (!d.getElementById(id)) {
+                        js = d.createElement(s);
+                        js.id = id;
+                        js.src = p + "://platform.twitter.com/widgets.js";
+                        fjs.parentNode.insertBefore(js, fjs);
+                    }
+                }(document, "script", "twitter-wjs");</script>
+        </div>
+
+        <div id="response">
+            <a class="twitter-share-button" data-size="large" href="https://twitter.com/intent/tweet?text=%23trumporputin">
+                New
+            </a>
+        </div>
+        
         <div class="loading"></div>
 
         <script>
+            //SIZE
+            function size() {
+                var w = $(window).width();
+                var h = $(window).height();
+                if (h > w) {
+                    var world_height = $(window).width() * 0.6;
+                    $("#world_container").height(world_height);
+                    $("#iframe_container").height($(window).height() - world_height);
+                    $("#response").show();
+                } else {
+                    $("#world_container").height("100%");
+                    $("#iframe_container").height(0);
+                    $("#response").css("display", "none");
+                }
+            }
+            $(window).resize(function () {
+                size();
+            });
+            size();
+
+            //GAME
             var url = "http://trump-vs-putin.tk/";
             if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
                 console.log("LOCALHOST");

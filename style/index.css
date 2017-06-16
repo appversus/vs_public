@@ -3,6 +3,11 @@ html{
     -webkit-tap-highlight-color:transparent;
 }
 
+html, body{
+    width: 100%;
+    height: 100%;
+}
+
 .full{
     position: absolute;
     top: 0;
@@ -83,4 +88,25 @@ html{
 .marker.animation{
     width: 20px;
     height: 20px;
+}
+
+/*TWITTER*/
+.timeline-Header{
+    display: none;
+}
+#iframe_container{
+    position: relative;
+    overflow: hidden;
+}
+#iframe_container iframe{
+    width: 100% !important;
+    height: calc(100% + 94px) !important;
+    margin-top: -44px !important;
+    margin-bottom: -50px !important;
+}
+
+#response{
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
 }

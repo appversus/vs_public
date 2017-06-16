@@ -1,7 +1,7 @@
 
 var Stats = function (arr) {
     console.log(arr)
-    this.stats_div = $("<div id='stats'>").appendTo("body");
+    this.stats_div = $("<div id='stats'>").appendTo("#world_container");
 
     //med
     this.stats_div.append("<div class='med'>");
